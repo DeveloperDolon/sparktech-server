@@ -8,8 +8,7 @@ import AppError from '../errors/AppError';
 import config from '../config';
 import handleDuplicateError from '../errors/handleDuplicateError';
 
-const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  console.log(err.statusCode);
+const globalErrorHandler: ErrorRequestHandler = (err, req, res, next): void => {
 
   let statusCode = 500;
   let message = 'Something went wrong!';
@@ -59,13 +58,14 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     ];
   }
 
-  return res.status(statusCode).json({
+  res.status(statusCode).json({
     success: false,
     message,
     errorSources,
     err,
     stack: config.NODE_ENV === 'development' ? err?.stack : null,
   });
+  return;
 };
 
 export default globalErrorHandler;

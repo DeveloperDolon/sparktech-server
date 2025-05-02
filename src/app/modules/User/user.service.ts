@@ -6,6 +6,7 @@ import { User } from './user.model';
 import { createToken } from './user.utils';
 
 const createUserIntoDB = async (payload: TUser) => {
+
   const user = await User.create(payload);
 
   return user;
@@ -23,8 +24,8 @@ const loginUser = async (payload: TLoginUser) => {
   }
 
   const JwtPayload = {
-    userId: user?.id,
-    role: user?.email,
+    userId: user?.id as string,
+    email: user?.email
   };
 
   const accessToken = createToken(
@@ -46,7 +47,7 @@ const loginUser = async (payload: TLoginUser) => {
 };
 
 const fetchUserData = async (id: string) => {
-  const user = await User.findOne({id});
+  const user = await User.findOne({ id });
 
   return user;
 };

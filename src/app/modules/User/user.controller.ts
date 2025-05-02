@@ -5,9 +5,14 @@ import config from '../../config';
 import { UserService } from './user.service';
 
 const register = catchAsync(async (req, res) => {
-  const { data: userData } = req.body;
+  
+  const user = {
+    name: req.body?.user?.name,
+    email: req.body?.user?.email,
+    password: req.body?.password
+  }
 
-  const result = await UserService.createUserIntoDB(userData);
+  const result = await UserService.createUserIntoDB(user);
 
   return sendRespnse(res, {
     statusCode: httpStatus.OK,
