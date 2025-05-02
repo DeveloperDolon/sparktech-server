@@ -5,11 +5,12 @@ const notFound: RequestHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  return res.status(404).json({
+  res.status(404).json({
     succes: false,
     message: 'Route not found',
     error: '',
   });
+  next();
 };
 
 export default notFound;

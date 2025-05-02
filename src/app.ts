@@ -7,6 +7,7 @@ import passport from 'passport';
 import './app/utiils/passport';
 // import router from './app/routes';
 import { rateLimit } from 'express-rate-limit';
+import router from './app/routes';
 
 const app: Application = express();
 
@@ -40,7 +41,7 @@ app.get(
   },
 );
 
-// app.use('/', router);
+app.use('/', router);
 
 app.use(globalErrorHandler);
 
