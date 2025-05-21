@@ -8,13 +8,8 @@ import './app/utiils/passport';
 // import router from './app/routes';
 import { rateLimit } from 'express-rate-limit';
 import router from './app/routes';
-import { Server } from 'socket.io';
-import { createServer } from 'http';
 
 const app: Application = express();
-
-const httpServer = createServer(app);
-const io = new Server(httpServer);
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -34,10 +29,6 @@ app.use(limiter);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Hello world from sparktech backend!');
-});
-
-io.on('connection', (socket) => {
-  console.log(socket);
 });
 
 app.get(
