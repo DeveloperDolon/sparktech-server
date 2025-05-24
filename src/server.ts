@@ -22,6 +22,13 @@ async function main() {
     io.on('connection', (socket) => {
       console.log('New client connected:', socket.id);
 
+      socket.on('message', (data) => {
+        console.log(data);
+        
+      });
+
+      socket.emit('message', 'Welcome to the socket server!');
+
       socket.on('disconnect', () => {
         console.log('Client disconnected:', socket.id);
       });
