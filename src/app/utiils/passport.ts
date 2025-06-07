@@ -12,6 +12,7 @@ const tokenExtractor = (req: Request) => {
   if (req && req.headers && req.headers.authorization) {
     const authHeader = req.headers.authorization;
     if (authHeader.startsWith('Bearer ')) {
+      jwt = authHeader.substring(7);
     } else {
       jwt = authHeader;
     }
