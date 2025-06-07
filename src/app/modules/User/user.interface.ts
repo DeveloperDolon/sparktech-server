@@ -5,7 +5,7 @@ export interface TUser {
   name: string;
   email: string;
   password: string;
-  status: 'online' | 'offline' | 'away' | 'busy';
+  status?: 'online' | 'offline' | 'away' | 'busy';
   lastActive: Date;
 }
 

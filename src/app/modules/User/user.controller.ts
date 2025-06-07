@@ -5,12 +5,12 @@ import config from '../../config';
 import { UserService } from './user.service';
 
 const register = catchAsync(async (req, res) => {
-  
   const user = {
     name: req.body?.user?.name,
     email: req.body?.user?.email,
-    password: req.body?.password
-  }
+    password: req.body?.password,
+    lastActive: new Date(),
+  };
 
   const result = await UserService.createUserIntoDB(user);
 
