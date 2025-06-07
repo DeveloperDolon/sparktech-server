@@ -28,7 +28,7 @@ const login = catchAsync(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: config.NODE_ENV === 'production',
-    sameSite: 'strict' as const,
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' as 'none' | 'lax',
   };
 
   res.cookie('accessToken', result?.accessToken, {
@@ -50,6 +50,7 @@ const login = catchAsync(async (req, res) => {
 });
 
 const me = catchAsync(async (req, res) => {
+  console.log(req?.user);
   const userId = (req?.user as { userId: string })?.userId;
 
   const result = await UserService.fetchUserData(userId);

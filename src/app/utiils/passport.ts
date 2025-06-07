@@ -4,13 +4,20 @@ import passportJWT from 'passport-jwt';
 import config from '../config';
 
 const JWTStrategy = passportJWT.Strategy;
-
 const secret = config.jwt_secret || 'secret';
 
-const cookieExtractor = (req: Request) => {
+const tokenExtractor = (req: Request) => {
   let jwt = null;
 
-  if (req && req.cookies) {
+  if (req && req.headers && req.headers.authorization) {
+    const authHeader = req.headers.authorization;
+    if (authHeader.startsWith('Bearer ')) {
+    } else {
+      jwt = authHeader;
+    }
+  }
+
+  if (!jwt && req && req.cookies && req.cookies['accessToken']) {
     jwt = req.cookies['accessToken'];
   }
 
@@ -21,7 +28,7 @@ passport.use(
   'jwt',
   new JWTStrategy(
     {
-      jwtFromRequest: cookieExtractor,
+      jwtFromRequest: tokenExtractor,
       secretOrKey: secret,
     },
     (jwtPayload, done) => {
