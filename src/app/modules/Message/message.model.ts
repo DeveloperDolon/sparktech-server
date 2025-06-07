@@ -26,6 +26,7 @@ const messageSchema = new Schema<TMessage>(
     readBy: {
       type: [String],
       default: [],
+      ref: 'User',
     },
   },
   {

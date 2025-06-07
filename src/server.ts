@@ -12,18 +12,12 @@ async function main() {
 
     const httpServer = createServer(app);
 
-    const io = new SocketServer(httpServer, {
-      cors: {
-        origin: '*',
-        methods: ['GET', 'POST'],
-      },
-    });
-
     io.on('connection', (socket) => {
       console.log('New client connected:', socket.id);
 
       socket.on('message', (data) => {
         console.log(data);
+        // io.emit('message', "Valo acho?");
       });
 
       socket.emit('message', 'Welcome to the socket server!');
