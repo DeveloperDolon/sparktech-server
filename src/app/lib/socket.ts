@@ -35,4 +35,23 @@ io.on('connection', (socket) => {
     delete UserSocketMap[userId];
     io.emit('getOnlineUsers', Object.keys(UserSocketMap));
   });
+  
 });
+
+export { io, httpServer };
+
+
+    // io.on('connection', (socket) => {
+    //   console.log('New client connected:', socket.id);
+
+    //   socket.on('message', (data) => {
+    //     console.log(data);
+    //     // io.emit('message', "Valo acho?");
+    //   });
+
+    //   socket.emit('message', 'Welcome to the socket server!');
+
+    //   socket.on('disconnect', () => {
+    //     console.log('Client disconnected:', socket.id);
+    //   });
+    // });

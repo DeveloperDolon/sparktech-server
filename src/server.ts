@@ -3,29 +3,13 @@ import { Server as SocketServer } from 'socket.io';
 import mongoose from 'mongoose';
 import config from './app/config';
 import app from './app';
+import { httpServer } from './app/lib/socket';
 
 let server: Server | undefined;
 
 async function main() {
   try {
     await mongoose.connect(config.database_url as string);
-
-    const httpServer = createServer(app);
-
-    io.on('connection', (socket) => {
-      console.log('New client connected:', socket.id);
-
-      socket.on('message', (data) => {
-        console.log(data);
-        // io.emit('message', "Valo acho?");
-      });
-
-      socket.emit('message', 'Welcome to the socket server!');
-
-      socket.on('disconnect', () => {
-        console.log('Client disconnected:', socket.id);
-      });
-    });
 
     httpServer.listen(config.port, () => {
       console.log(`Server is running on port ${config.port}`);
