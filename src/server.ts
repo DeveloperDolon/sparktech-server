@@ -24,7 +24,6 @@ async function main() {
 
       socket.on('message', (data) => {
         console.log(data);
-        
       });
 
       socket.emit('message', 'Welcome to the socket server!');
