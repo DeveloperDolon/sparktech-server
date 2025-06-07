@@ -12,6 +12,7 @@ const messageSchema = new Schema<TMessage>(
     sender: {
       type: String,
       required: true,
+      ref: 'User',
     },
     content: {
       type: String,
@@ -19,6 +20,7 @@ const messageSchema = new Schema<TMessage>(
     },
     chatRoom: {
       type: String,
+      ref: 'ChatRoom',
       required: true,
     },
     readBy: {
