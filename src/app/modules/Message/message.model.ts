@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import mongoose, { model, Schema } from 'mongoose';
 import { TMessage } from './message.interface';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -10,21 +10,26 @@ const messageSchema = new Schema<TMessage>(
       default: () => uuidv4(),
     },
     sender: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'User',
+    },
+    receiverId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
     },
     content: {
       type: String,
       required: true,
     },
     chatRoom: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'ChatRoom',
       required: true,
     },
     readBy: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
       default: [],
       ref: 'User',
     },

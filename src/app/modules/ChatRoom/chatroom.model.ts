@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import mongoose, { model, Schema } from 'mongoose';
 import { TChatRoom } from './chatroom.interface';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -14,12 +14,12 @@ const chatRoomSchema = new Schema<TChatRoom>(
       required: true,
     },
     users: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
       ref: 'User',
       required: true,
     },
     messages: {
-      type: [String],
+      type: [mongoose.Schema.Types.ObjectId],
       default: [],
       ref: 'Message',
     },

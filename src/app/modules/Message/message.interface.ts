@@ -1,10 +1,12 @@
+import { ObjectId } from "mongoose";
 
 export interface TMessage {
   id: string;
-  sender: string;
+  sender: ObjectId;
   content: string;
-  chatRoom: string;
-  readBy: string[];
+  chatRoom: ObjectId;
+  readBy: ObjectId[];
+  receiverId: ObjectId;
 }
 
 
