@@ -26,6 +26,15 @@ const userSchema = new Schema<TUser, UserModel>(
       required: true,
       select: 0,
     },
+    status: {
+      type: String,
+      enum: ['online', 'offline', 'away', 'busy'],
+      default: 'offline',
+    },
+    lastActive: {
+      type: Date,
+      default: Date.now,
+    }
   },
   {
     timestamps: true,
