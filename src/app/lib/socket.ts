@@ -2,6 +2,7 @@ import { createServer } from 'http';
 import app from '../../app';
 import { Server } from 'socket.io';
 import { messageFunction } from '../modules/Message/message.controller';
+import { User } from '../modules/User/user.model';
 
 const httpServer = createServer(app);
 
@@ -20,7 +21,7 @@ export const UserSocketMap: {
   [userId: string]: string;
 } = {};
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('A user connected:', socket.id);
 
   const userId = socket.handshake.query.userId as string;
@@ -31,7 +32,10 @@ io.on('connection', (socket) => {
 
   messageFunction(socket);
 
-  io.emit('getOnlineUsers', Object.keys(UserSocketMap));
+  const userIds = Object.keys(UserSocketMap);
+  const users = await User.find({ id: { $in: userIds }, status: 'online' });
+
+  io.emit('getOnlineUsers', {users: users});
 
   socket.on('disconnect', () => {
     console.log('A user disconnected:', socket.id);
