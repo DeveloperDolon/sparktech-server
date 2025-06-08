@@ -39,11 +39,6 @@ const loginUser = async (payload: TLoginUser) => {
     parseInt(config.jwt_refresh_token_expires_time || '6300') as number,
   );
 
-  await User.updateOne(
-    { id: user.id },
-    { status: 'online', lastActive: new Date() },
-  );
-
   return {
     accessToken,
     refreshToken,

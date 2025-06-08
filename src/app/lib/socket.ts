@@ -28,6 +28,11 @@ io.on('connection', async (socket) => {
 
   if (userId) {
     UserSocketMap[userId] = socket.id;
+
+    await User.updateOne(
+      { id: userId },
+      { status: 'online', lastActive: new Date() },
+    );
   }
 
   messageFunction(socket);
@@ -35,10 +40,17 @@ io.on('connection', async (socket) => {
   const userIds = Object.keys(UserSocketMap);
   const users = await User.find({ id: { $in: userIds }, status: 'online' });
 
-  io.emit('getOnlineUsers', {users: users});
+  io.emit('getOnlineUsers', { users: users });
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', async () => {
     console.log('A user disconnected:', socket.id);
+
+    if (userId && UserSocketMap[userId]) {
+      await User.updateOne(
+        { id: userId },
+        { status: 'offline', lastActive: new Date() },
+      );
+    }
     delete UserSocketMap[userId];
     io.emit('getOnlineUsers', Object.keys(UserSocketMap));
   });
