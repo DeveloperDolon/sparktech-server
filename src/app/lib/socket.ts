@@ -37,7 +37,7 @@ io.on('connection', async (socket) => {
 
   messageFunction(socket);
 
-  const userIds = Object.keys(UserSocketMap);
+  const userIds = Object.keys(UserSocketMap)?.filter((id) => id !== userId);
   const users = await User.find({ id: { $in: userIds }, status: 'online' });
 
   io.emit('getOnlineUsers', { users: users });
