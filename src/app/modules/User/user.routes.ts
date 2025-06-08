@@ -24,4 +24,10 @@ router.post(
     UserController.me,
   );
 
+  router.post(
+    '/offline',
+    passport.authenticate('jwt', { session: false }),
+    UserController.offline,
+  )
+
   export const UserRoutes = router;

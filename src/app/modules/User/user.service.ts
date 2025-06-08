@@ -52,4 +52,18 @@ const fetchUserData = async (id: string) => {
   return user;
 };
 
-export const UserService = { createUserIntoDB, loginUser, fetchUserData };
+const makeOfflineUser = async (id: string) => {
+  const user = await User.findOne({ id });
+
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  }
+
+  user.status = 'offline';
+  user.lastActive = new Date();
+  await user.save();
+
+  return user;
+}
+
+export const UserService = { createUserIntoDB, loginUser, fetchUserData, makeOfflineUser };

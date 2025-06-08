@@ -62,4 +62,17 @@ const me = catchAsync(async (req, res) => {
   });
 });
 
-export const UserController = { register, login, me };
+const offline = catchAsync(async (req, res) => {
+  const userId = (req?.user as { userId: string })?.userId;
+
+  const result = await UserService.makeOfflineUser(userId);
+
+  return sendRespnse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User is offline now!',
+    data: result,
+  });
+});
+
+export const UserController = { register, login, me, offline };
