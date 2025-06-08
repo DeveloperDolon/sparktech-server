@@ -16,7 +16,7 @@ export function getReceiverSocketId(userId: string) {
   return UserSocketMap[userId];
 }
 
-const UserSocketMap: {
+export const UserSocketMap: {
   [userId: string]: string;
 } = {};
 

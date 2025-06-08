@@ -3,6 +3,7 @@ import catchAsync from '../../utiils/catchAsync';
 import sendRespnse from '../../utiils/sendResponse';
 import config from '../../config';
 import { UserService } from './user.service';
+import { UserSocketMap } from '../../lib/socket';
 
 const register = catchAsync(async (req, res) => {
   const user = {
@@ -28,7 +29,10 @@ const login = catchAsync(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: config.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' as 'none' | 'lax',
+    sameSite:
+      process.env.NODE_ENV === 'production'
+        ? 'none'
+        : ('lax' as 'none' | 'lax'),
   };
 
   res.cookie('accessToken', result?.accessToken, {
@@ -75,4 +79,19 @@ const offline = catchAsync(async (req, res) => {
   });
 });
 
-export const UserController = { register, login, me, offline };
+const onlineUsers = catchAsync(async (req, res) => {
+  const authId = (req?.user as { userId: string })?.userId;
+  
+  const userIds = Object.keys(UserSocketMap)?.filter((id) => id !== authId);
+
+  const result = await UserService.getOnlineUsers(userIds);
+
+  return sendRespnse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Online users fetched successfully!',
+    data: result,
+  });
+});
+
+export const UserController = { register, login, me, offline, onlineUsers };

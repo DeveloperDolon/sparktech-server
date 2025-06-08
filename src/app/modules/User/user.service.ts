@@ -6,7 +6,6 @@ import { User } from './user.model';
 import { createToken } from './user.utils';
 
 const createUserIntoDB = async (payload: TUser) => {
-
   const user = await User.create(payload);
 
   return user;
@@ -25,7 +24,7 @@ const loginUser = async (payload: TLoginUser) => {
 
   const JwtPayload = {
     userId: user?.id as string,
-    email: user?.email
+    email: user?.email,
   };
 
   const accessToken = createToken(
@@ -64,6 +63,18 @@ const makeOfflineUser = async (id: string) => {
   await user.save();
 
   return user;
-}
+};
 
-export const UserService = { createUserIntoDB, loginUser, fetchUserData, makeOfflineUser };
+const getOnlineUsers = async (userIds: string[]) => {
+  const users = await User.find({ id: { $in: userIds }, status: 'online' });
+
+  return users;
+};
+
+export const UserService = {
+  createUserIntoDB,
+  loginUser,
+  fetchUserData,
+  makeOfflineUser,
+  getOnlineUsers,
+};
