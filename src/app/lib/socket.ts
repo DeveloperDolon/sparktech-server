@@ -28,7 +28,7 @@ io.on('connection', async (socket) => {
 
   if (userId) {
     UserSocketMap[userId] = socket.id;
-
+    
     await User.updateOne(
       { id: userId },
       { status: 'online', lastActive: new Date() },
@@ -37,10 +37,11 @@ io.on('connection', async (socket) => {
 
   messageFunction(socket);
 
-  const userIds = Object.keys(UserSocketMap)?.filter((id) => id !== userId);
-  const users = await User.find({ id: { $in: userIds }, status: 'online' });
-
-  io.emit('getOnlineUsers', { users: users });
+  Object.keys(UserSocketMap)?.forEach( async (userDataId) => {
+    const userIds = Object.keys(UserSocketMap)?.filter((id) => id !== userDataId);
+    const users = await User.find({ id: { $in: userIds }, status: 'online' });
+    io.in(UserSocketMap[userDataId]).emit('getOnlineUsers', { users: users });
+  });
 
   socket.on('disconnect', async () => {
     console.log('A user disconnected:', socket.id);
