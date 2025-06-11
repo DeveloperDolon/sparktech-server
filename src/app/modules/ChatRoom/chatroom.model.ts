@@ -11,7 +11,7 @@ const chatRoomSchema = new Schema<TChatRoom>(
     },
     name: {
       type: String,
-      required: true,
+      required: false,
     },
     users: {
       type: [mongoose.Schema.Types.ObjectId],

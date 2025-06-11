@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { Model } from 'mongoose';
 
 export interface TUser {
   id?: string;
@@ -15,10 +15,9 @@ export type TLoginUser = {
 };
 
 export interface UserModel extends Model<TUser> {
-    isUserExistByEmail(email: string): Promise<TUser | null>;
-    isPasswordMatched(
-      plainTextPassword: string,
-      hashedPassword: string,
-    ): Promise<boolean>;
-  }
-  
+  isUserExistByEmail(email: string): Promise<TUser | null>;
+  isPasswordMatched(
+    plainTextPassword: string,
+    hashedPassword: string,
+  ): Promise<boolean>;
+}
