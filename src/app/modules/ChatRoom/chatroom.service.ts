@@ -8,7 +8,9 @@ const createChatRoomIntoDB = async (req: Request) => {
   const isExistChatRoom = await ChatRoom.findOne({
     users: { $all: [userId, authId] },
     isGroup: false,
-  });
+  })
+    .populate('messages')
+    .populate('users');
 
   if (isExistChatRoom?.id) {
     return isExistChatRoom;
