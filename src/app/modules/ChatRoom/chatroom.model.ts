@@ -14,12 +14,12 @@ const chatRoomSchema = new Schema<TChatRoom>(
       required: false,
     },
     users: {
-      type: [mongoose.Schema.Types.ObjectId],
+      type: [String],
       ref: 'User',
       required: true,
     },
     messages: {
-      type: [mongoose.Schema.Types.ObjectId],
+      type: [String],
       default: [],
       ref: 'Message',
     },

@@ -10,12 +10,12 @@ const messageSchema = new Schema<TMessage>(
       default: () => uuidv4(),
     },
     sender: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
       ref: 'User',
     },
     receiverId: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'User',
     },
     content: {
@@ -23,12 +23,12 @@ const messageSchema = new Schema<TMessage>(
       required: true,
     },
     chatRoom: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       ref: 'ChatRoom',
       required: true,
     },
     readBy: {
-      type: [mongoose.Schema.Types.ObjectId],
+      type: [String],
       default: [],
       ref: 'User',
     },

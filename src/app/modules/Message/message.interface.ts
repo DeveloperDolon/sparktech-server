@@ -2,9 +2,9 @@ import { ObjectId } from "mongoose";
 
 export interface TMessage {
   id: string;
-  sender: ObjectId;
+  sender: string;
   content: string;
-  chatRoom: ObjectId;
+  chatRoom: string;
   readBy: ObjectId[];
-  receiverId: ObjectId;
+  receiverId: string;
 }

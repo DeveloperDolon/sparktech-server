@@ -9,13 +9,24 @@ const createChatRoomIntoDB = async (req: Request) => {
     users: { $all: [userId, authId] },
     isGroup: false,
   })
-    .populate('messages')
-    .populate('users');
+    .populate({
+      path: 'users',
+      model: 'User',
+      localField: 'users',
+      foreignField: 'id',
+      justOne: false,
+    })
+    .populate({
+      path: 'messages',
+      model: 'Message',
+      localField: 'messages',
+      foreignField: 'id',
+      justOne: false,
+    });
 
   if (isExistChatRoom?.id) {
     return isExistChatRoom;
   }
-
   const newChatRoom = await ChatRoom.create({
     users: [authId, userId],
   });
