@@ -1,7 +1,8 @@
 import type { Socket } from 'socket.io';
 import { Message } from './message.model';
+import { getReceiverSocketId } from '../../lib/socket';
 
-export const messageFunction = (socket: Socket) => {
+const messageFunction = (socket: Socket) => {
   socket.on(
     'message',
     async (data: {
@@ -17,9 +18,16 @@ export const messageFunction = (socket: Socket) => {
         receiverId: data?.userId,
       });
 
-      socket.to(data.userId).emit('message', data?.message);
+      socket
+        .to(getReceiverSocketId(data.userId))
+        .emit('message', {
+          chatRoom: newMessage?.chatRoom,
+          content: newMessage?.content,
+          sender: newMessage?.sender,
+          receiverId: newMessage?.receiverId
+        });
     },
   );
 };
 
-export const MessageController = {};
+export const MessageController = {messageFunction};

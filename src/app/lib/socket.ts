@@ -1,7 +1,7 @@
+import { MessageController } from './../modules/Message/message.controller';
 import { createServer } from 'http';
 import app from '../../app';
 import { Server } from 'socket.io';
-import { messageFunction } from '../modules/Message/message.controller';
 import { User } from '../modules/User/user.model';
 
 const httpServer = createServer(app);
@@ -35,7 +35,7 @@ io.on('connection', async (socket) => {
     );
   }
 
-  messageFunction(socket);
+  MessageController.messageFunction(socket);
 
   Object.keys(UserSocketMap)?.forEach(async (userDataId) => {
     const userIds = Object.keys(UserSocketMap)?.filter(
