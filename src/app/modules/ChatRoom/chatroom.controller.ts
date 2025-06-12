@@ -14,7 +14,8 @@ const createChatRoom = catchAsync(async (req, res) => {
 });
 
 const chatRoomList = catchAsync(async (req, res) => {
-  const result = ChatRoomService.getChatRoomList();
+  const authId = (req?.user as { userId: string })?.userId;
+  const result = await ChatRoomService.getChatRoomList(authId);
 
   return sendResponse(res, {
     statusCode: 200,
