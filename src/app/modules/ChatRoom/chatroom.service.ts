@@ -14,6 +14,7 @@ const createChatRoomIntoDB = async (req: Request) => {
       model: 'User',
       localField: 'users',
       foreignField: 'id',
+      match: { id: { $ne: authId } },
       justOne: false,
     })
     .populate({
