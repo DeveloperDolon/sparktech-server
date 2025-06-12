@@ -33,4 +33,9 @@ const createChatRoomIntoDB = async (req: Request) => {
   return newChatRoom;
 };
 
-export const ChatRoomService = { createChatRoomIntoDB };
+const getChatRoomList = async () => {
+  const chatroomList = await ChatRoom.find();
+  return chatroomList;
+};
+
+export const ChatRoomService = { createChatRoomIntoDB, getChatRoomList };

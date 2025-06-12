@@ -10,4 +10,10 @@ router.post(
   ChatRoomController.createChatRoom,
 );
 
+router.get(
+  '/list',
+  passport.authenticate('jwt', { session: false }),
+  ChatRoomController.chatRoomList,
+);
+
 export const ChatRoomRoutes = router;

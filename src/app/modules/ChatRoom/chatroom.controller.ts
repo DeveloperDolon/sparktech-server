@@ -13,4 +13,15 @@ const createChatRoom = catchAsync(async (req, res) => {
   });
 });
 
-export const ChatRoomController = { createChatRoom };
+const chatRoomList = catchAsync(async (req, res) => {
+  const result = ChatRoomService.getChatRoomList();
+
+  return sendResponse(res, {
+    statusCode: 200,
+    message: 'Chat room list retrieved successful!',
+    success: true,
+    data: result,
+  });
+});
+
+export const ChatRoomController = { createChatRoom, chatRoomList };
