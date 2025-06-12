@@ -34,15 +34,37 @@ const createChatRoomIntoDB = async (req: Request) => {
 };
 
 const getChatRoomList = async (authId: string) => {
-  const chatroomList = await ChatRoom.find({
-     users: { $in: [authId.trim()] },
-  }).populate({
-    path: 'users',
-    model: 'User',
-    localField: 'users',
-    foreignField: 'id',
-    justOne: false,
-  });
+  const chatroomList = await ChatRoom.aggregate([
+    {
+      $match: {
+        users: { $in: [authId.trim()] },
+      },
+    },
+    {
+      $lookup: {
+        from: 'users',
+        localField: 'users',
+        foreignField: 'id',
+        as: 'usersData',
+      },
+    },
+    {
+      $lookup: {
+        from: 'messages',
+        let: { chatRoom: '$id' },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ['$chatRoom', '$$chatRoom'] },
+            },
+          },
+          { $sort: { createdAt: -1 } },
+          { $limit: 1 },
+        ],
+        as: 'latestMessage',
+      },
+    },
+  ]);
 
   return chatroomList;
 };
