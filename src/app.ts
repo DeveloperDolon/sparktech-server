@@ -25,7 +25,10 @@ app.use(passport.initialize());
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: [
+      'http://localhost:3000',
+      'http://192.168.218.242:3000',
+    ],
     credentials: true,
     exposedHeaders: ['set-cookie'],
   }),
