@@ -18,16 +18,14 @@ const messageFunction = (socket: Socket) => {
         receiverId: data?.userId,
       });
 
-      socket
-        .to(getReceiverSocketId(data.userId))
-        .emit('message', {
-          chatRoom: newMessage?.chatRoom,
-          content: newMessage?.content,
-          sender: newMessage?.sender,
-          receiverId: newMessage?.receiverId
-        });
+      socket.to(getReceiverSocketId(data.userId)).emit('message', {
+        chatRoom: newMessage?.chatRoom,
+        content: newMessage?.content,
+        sender: newMessage?.sender,
+        receiverId: newMessage?.receiverId,
+      });
     },
   );
 };
 
-export const MessageController = {messageFunction};
+export const MessageController = { messageFunction };
