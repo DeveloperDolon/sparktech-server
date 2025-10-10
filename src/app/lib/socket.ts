@@ -22,8 +22,6 @@ export const UserSocketMap: {
 } = {};
 
 io.on('connection', async (socket) => {
-  console.log('A user connected:', socket.id);
-
   const userId = socket.handshake.query.userId as string;
 
   if (userId) {
@@ -34,6 +32,9 @@ io.on('connection', async (socket) => {
       { status: 'online', lastActive: new Date() },
     );
   }
+
+  const userDoc = await User.findOne({ id: userId });
+  console.log('A user connected:', socket.id, ' User name', userDoc?.name);
 
   MessageController.messageFunction(socket);
 
@@ -54,8 +55,15 @@ io.on('connection', async (socket) => {
         { status: 'offline', lastActive: new Date() },
       );
     }
+
     delete UserSocketMap[userId];
-    io.emit('getOnlineUsers', Object.keys(UserSocketMap));
+    Object.keys(UserSocketMap)?.forEach(async (userDataId) => {
+      const userIds = Object.keys(UserSocketMap)?.filter(
+        (id) => id !== userDataId,
+      );
+      const users = await User.find({ id: { $in: userIds }, status: 'online' });
+      io.in(UserSocketMap[userDataId]).emit('getOnlineUsers', { users: users });
+    });
   });
 });
 
