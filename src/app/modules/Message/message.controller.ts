@@ -2,7 +2,6 @@ import { ChatRoom } from './../ChatRoom/chatroom.model';
 import type { Socket } from 'socket.io';
 import { Message } from './message.model';
 import { getReceiverSocketId } from '../../lib/socket';
-import { get } from 'node:https';
 
 const messageFunction = (socket: Socket) => {
   socket.on(

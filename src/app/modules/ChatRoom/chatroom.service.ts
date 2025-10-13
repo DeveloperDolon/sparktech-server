@@ -30,7 +30,16 @@ const createChatRoomIntoDB = async (req: Request) => {
     users: [authId, userId],
   });
 
-  return newChatRoom;
+  const populatedChatRoom = await ChatRoom.findById(newChatRoom._id).populate({
+    path: 'users',
+    model: 'User',
+    localField: 'users',
+    foreignField: 'id',
+    match: { id: { $ne: authId } },
+    justOne: false,
+  });
+
+  return populatedChatRoom;
 };
 
 const getChatRoomList = async (authId: string) => {
