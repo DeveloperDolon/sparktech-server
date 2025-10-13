@@ -2,6 +2,7 @@ import { ChatRoom } from './../ChatRoom/chatroom.model';
 import type { Socket } from 'socket.io';
 import { Message } from './message.model';
 import { getReceiverSocketId } from '../../lib/socket';
+import { User } from '../User/user.model';
 
 const messageFunction = (socket: Socket) => {
   socket.on(
@@ -12,14 +13,21 @@ const messageFunction = (socket: Socket) => {
       authId: string;
       roomId: string;
     }) => {
-
       const newMessage = await Message.create({
         chatRoom: data?.roomId,
         content: data?.message,
         sender: data?.authId,
         receiverId: data?.userId,
       });
-      const chatRoom = await ChatRoom.findOne({id: data?.roomId});
+
+      const chatRoom = await ChatRoom.findOne({ id: data?.roomId }).populate({
+        path: 'users',
+        model: 'User',
+        localField: 'users',
+        foreignField: 'id',
+        match: { id: { $ne: data?.authId } },
+        justOne: false,
+      });
 
       socket.to(getReceiverSocketId(data.userId)).emit('chatroom', {
         chatRoom,
