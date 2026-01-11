@@ -16,4 +16,10 @@ router.get(
   ChatRoomController.chatRoomList,
 );
 
+router.get(
+  '/:chatRoomId',
+  passport.authenticate('jwt', { session: false }),
+  ChatRoomController.singleChatRoom,
+);
+
 export const ChatRoomRoutes = router;

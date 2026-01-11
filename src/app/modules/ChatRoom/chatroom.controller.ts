@@ -25,4 +25,16 @@ const chatRoomList = catchAsync(async (req, res) => {
   });
 });
 
-export const ChatRoomController = { createChatRoom, chatRoomList };
+const singleChatRoom = catchAsync(async (req, res) => {
+  const { chatRoomId } = req.params;
+  const result = await ChatRoomService.getSingleChatRoom(chatRoomId);
+
+  return sendResponse(res, {
+    statusCode: 200,
+    message: 'Single chat room retrieved successful!',
+    success: true,
+    data: result,
+  });
+});
+
+export const ChatRoomController = { createChatRoom, chatRoomList, singleChatRoom };

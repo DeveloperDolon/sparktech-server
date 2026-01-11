@@ -78,4 +78,14 @@ const getChatRoomList = async (authId: string) => {
   return chatroomList;
 };
 
-export const ChatRoomService = { createChatRoomIntoDB, getChatRoomList };
+const getSingleChatRoom = async (chatRoomId: string) => {
+  const chatRoom = await ChatRoom.findById(chatRoomId).populate('users');
+
+  return chatRoom;
+};
+
+export const ChatRoomService = {
+  createChatRoomIntoDB,
+  getChatRoomList,
+  getSingleChatRoom,
+};
