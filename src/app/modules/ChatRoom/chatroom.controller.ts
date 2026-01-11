@@ -37,4 +37,8 @@ const singleChatRoom = catchAsync(async (req, res) => {
   });
 });
 
-export const ChatRoomController = { createChatRoom, chatRoomList, singleChatRoom };
+export const ChatRoomController = {
+  createChatRoom,
+  chatRoomList,
+  singleChatRoom,
+};
