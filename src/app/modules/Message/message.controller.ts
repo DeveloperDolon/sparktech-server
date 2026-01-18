@@ -2,7 +2,6 @@ import { ChatRoom } from './../ChatRoom/chatroom.model';
 import type { Socket } from 'socket.io';
 import { Message } from './message.model';
 import { getReceiverSocketId } from '../../lib/socket';
-import { User } from '../User/user.model';
 
 const messageFunction = (socket: Socket) => {
   socket.on(
