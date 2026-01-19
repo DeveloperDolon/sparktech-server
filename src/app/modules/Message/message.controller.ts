@@ -38,6 +38,8 @@ const messageFunction = (socket: Socket) => {
         content: newMessage?.content,
         sender: newMessage?.sender,
         receiverId: newMessage?.receiverId,
+        isSeen: newMessage?.isSeen,
+        id: newMessage?.id,
       });
     },
   );
