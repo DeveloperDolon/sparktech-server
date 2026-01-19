@@ -5,6 +5,9 @@ import { Message } from '../Message/message.model';
 const createChatRoomIntoDB = async (req: Request) => {
   const { userId } = req.body;
   const authId = (req?.user as { userId: string })?.userId;
+  const page = Number(req.query.page) || 1;
+  const limit = 20;
+  const skip = (page - 1) * limit;
 
   const isExistChatRoom: any = await ChatRoom.findOne({
     users: { $all: [userId, authId] },
@@ -19,7 +22,11 @@ const createChatRoomIntoDB = async (req: Request) => {
   });
 
   if (isExistChatRoom?.id) {
-    const messages = await Message.find({ chatRoom: isExistChatRoom?.id });
+    const messages = await Message.find({ chatRoom: isExistChatRoom?.id })
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit);
+
     const chatRoomObj = isExistChatRoom.toObject();
     chatRoomObj.messages = messages;
 
