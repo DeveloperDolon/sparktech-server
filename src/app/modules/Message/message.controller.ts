@@ -41,6 +41,27 @@ const messageFunction = (socket: Socket) => {
       });
     },
   );
+
+  socket.on(
+    'messageSeen',
+    async (data: { messageId: string; chatRoomId: string }) => {
+      const message = await Message.findOne({ id: data?.messageId });
+
+      await Message.updateOne(
+        { id: data?.messageId },
+        { isSeen: true, readBy: message?.receiverId },
+      );
+
+      if (message?.receiverId) {
+        socket
+          .to(getReceiverSocketId(message.receiverId))
+          .emit('messageSeen', {
+            message: message,
+            chatRoomId: data?.chatRoomId,
+          });
+      }
+    },
+  );
 };
 
 export const MessageController = { messageFunction };

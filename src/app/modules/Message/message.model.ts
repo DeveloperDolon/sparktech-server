@@ -1,4 +1,5 @@
-import mongoose, { model, Schema } from 'mongoose';
+import { ObjectId } from 'mongoose';
+import { model, Schema } from 'mongoose';
 import { TMessage } from './message.interface';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -28,10 +29,14 @@ const messageSchema = new Schema<TMessage>(
       required: true,
     },
     readBy: {
-      type: [String],
-      default: [],
+      type: String,
+      default: null,
       ref: 'User',
     },
+    isSeen:{
+      type: Boolean,
+      default: false,
+    }
   },
   {
     timestamps: true,

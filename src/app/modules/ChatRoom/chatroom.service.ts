@@ -22,10 +22,13 @@ const createChatRoomIntoDB = async (req: Request) => {
   });
 
   if (isExistChatRoom?.id) {
-    const messages = await Message.find({ chatRoom: isExistChatRoom?.id })
-        .sort({ createdAt: -1 })
-        .skip(skip)
-        .limit(limit);
+    const messages = await Message.aggregate([
+      { $match: { chatRoom: isExistChatRoom?.id } },
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: limit },
+      { $sort: { createdAt: 1 } },
+    ]);
 
     const chatRoomObj = isExistChatRoom.toObject();
     chatRoomObj.messages = messages;

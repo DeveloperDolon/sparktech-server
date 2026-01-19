@@ -5,6 +5,7 @@ export interface TMessage {
   sender: string;
   content: string;
   chatRoom: string;
-  readBy: ObjectId[];
+  readBy: ObjectId;
   receiverId: string;
+  isSeen: boolean;
 }
